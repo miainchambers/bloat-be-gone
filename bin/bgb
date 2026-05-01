@@ -119,7 +119,7 @@ case "$COMMAND" in
     echo "  help        Show this help"
     echo ""
     echo "Options (passed through to clean):"
-    echo "  --keep <project>        Keep a specific project untouched"
+    echo "  --keep <project(s)>     Keep specific projects (comma-separated: api,web,mobile)"
     echo "  --all                   Clean all projects (no exclusions)"
     echo "  --dry-run               Preview only — nothing is deleted"
     echo "  --no-dist               Skip dist/ and build/ directories"
@@ -128,6 +128,7 @@ case "$COMMAND" in
     echo "Examples:"
     echo "  bgb clean"
     echo "  bgb clean --keep api-project"
+    echo "  bgb clean --keep api,web,mobile"
     echo "  bgb clean --dry-run"
     echo "  bgb clean --all --no-dist"
     echo "  bgb clean --workspace ~/projects --keep api-project"
@@ -138,6 +139,7 @@ case "$COMMAND" in
     echo "  bgb --dry-run"
     echo "  bgb --all"
     echo "  bgb --keep api-project"
+    echo "  bgb --keep api,web"
     ;;
 
   *)

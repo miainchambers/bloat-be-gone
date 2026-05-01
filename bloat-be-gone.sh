@@ -40,7 +40,7 @@ _shellcheck_install_hint() {
 }
 
 # --- Flags ---
-KEEP_OVERRIDE=""
+KEEP_OVERRIDE_ARGS=()
 DRY_RUN=false
 CLEAN_ALL=false
 SHOW_VERSION=false
@@ -54,7 +54,8 @@ while [[ $# -gt 0 ]]; do
         echo "❌ --keep requires a value"
         exit 1
       fi
-      KEEP_OVERRIDE="$2"
+      # Accept comma-separated list: --keep api,web,mobile
+      IFS=',' read -ra KEEP_OVERRIDE_ARGS <<< "$2"
       shift 2
       ;;
     --dry-run)
@@ -85,7 +86,7 @@ while [[ $# -gt 0 ]]; do
       echo "Usage: bloat-be-gone [options]"
       echo ""
       echo "Options:"
-      echo "  --keep <project>      Keep a specific project untouched"
+      echo "  --keep <project(s)>   Keep specific projects (comma-separated: api,web)"
       echo "  --all                 Clean all projects (no exclusions)"
       echo "  --dry-run             Preview only — nothing is deleted"
       echo "  --no-dist             Skip dist/ and build/ directories"
@@ -171,20 +172,21 @@ if [ ${#PROJECTS[@]} -eq 0 ]; then
   exit 0
 fi
 
-KEEP_DIR=""
+KEEP_DIRS=()
 
 # --- KEEP logic ---
-if [ -n "$KEEP_OVERRIDE" ]; then
-  KEEP_DIR="$BASE_DIR/$KEEP_OVERRIDE"
-
-  if [ ! -d "$KEEP_DIR" ]; then
-    echo "❌ --keep target does not exist: $KEEP_DIR"
-    echo "   Available projects:"
-    for p in "${PROJECTS[@]}"; do echo "     - $(basename "$p")"; done
-    exit 1
-  fi
-
-  echo "🎯 Keeping (override): $KEEP_DIR"
+if [ ${#KEEP_OVERRIDE_ARGS[@]} -gt 0 ]; then
+  for _k in "${KEEP_OVERRIDE_ARGS[@]}"; do
+    _kdir="$BASE_DIR/$_k"
+    if [ ! -d "$_kdir" ]; then
+      echo "❌ --keep target does not exist: $_kdir"
+      echo "   Available projects:"
+      for p in "${PROJECTS[@]}"; do echo "     - $(basename "$p")"; done
+      exit 1
+    fi
+    KEEP_DIRS+=("$_kdir")
+  done
+  echo "🎯 Keeping (override): ${KEEP_OVERRIDE_ARGS[*]}"
 
 elif [ "$CLEAN_ALL" = true ]; then
   echo "⚠️ --all mode enabled — all projects will be cleaned"
@@ -213,16 +215,18 @@ else
   fi
 
   if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
-    echo "🔍 Using fzf selection"
 
-    KEEP_DIR=$(
+    mapfile -t KEEP_DIRS < <(
       for dir in "${PROJECTS[@]}"; do
         size=$(du -sh "$dir" 2>/dev/null | cut -f1)
         printf "%s | %s\n" "$dir" "$size"
       done |
-      fzf --prompt="Select project to KEEP: " |
+      fzf --prompt="Select projects to KEEP: " \
+          --multi \
+          --header="Tab=select/deselect  Enter=confirm  Ctrl-C=abort" \
+          --bind='tab:toggle+down' |
       cut -d'|' -f1 |
-      xargs
+      sed 's/[[:space:]]*$//'
     )
 
   else
@@ -234,9 +238,12 @@ else
       PROJECT_NAMES+=("$(basename "$p")")
     done
 
+    echo "Select projects to KEEP (enter number, blank line when done):"
     select KEEP_NAME in "${PROJECT_NAMES[@]}"; do
       if [ -n "$KEEP_NAME" ]; then
-        KEEP_DIR="$BASE_DIR/$KEEP_NAME"
+        KEEP_DIRS+=("$BASE_DIR/$KEEP_NAME")
+        echo "  ✅ Added: $KEEP_NAME (enter another number, or blank to finish)"
+      else
         break
       fi
     done
@@ -244,13 +251,17 @@ else
 fi
 
 # --- SAFETY GUARD ---
-if [ "$CLEAN_ALL" != true ] && [ -z "$KEEP_DIR" ]; then
+if [ "$CLEAN_ALL" != true ] && [ "${#KEEP_DIRS[@]}" -eq 0 ]; then
   echo "❌ Safety abort: no project selected to keep"
   exit 1
 fi
 
 echo "📦 Base: $BASE_DIR"
-echo "✅ Keep: ${KEEP_DIR:-NONE}"
+if [ "${#KEEP_DIRS[@]}" -gt 0 ]; then
+  for _kd in "${KEEP_DIRS[@]}"; do echo "✅ Keep: $(basename "$_kd")"; done
+else
+  echo "✅ Keep: NONE"
+fi
 
 [ "$NO_DIST" = true ] && echo "ℹ️  --no-dist: skipping dist/ and build/"
 
@@ -259,7 +270,12 @@ echo ""
 echo "🧾 Will clean:"
 
 for dir in "${PROJECTS[@]}"; do
-  if [ -z "$KEEP_DIR" ] || [ "$dir" != "$KEEP_DIR" ]; then
+  _skip=false
+  for _kd in "${KEEP_DIRS[@]:-}"; do
+    [ -z "$_kd" ] && break
+    [ "$dir" = "$_kd" ] && _skip=true && break
+  done
+  if [ "$_skip" = false ]; then
     echo "  - $(basename "$dir")"
   fi
 done
@@ -295,7 +311,12 @@ rm -rf "$HOME/.npm" "$HOME/.pnpm-store" "$HOME/.cache/yarn" "$HOME/.yarn"
 # --- Cleanup ---
 for dir in "${PROJECTS[@]}"; do
 
-  if [ -n "$KEEP_DIR" ] && [ "$dir" = "$KEEP_DIR" ]; then
+  _skip=false
+  for _kd in "${KEEP_DIRS[@]:-}"; do
+    [ -z "$_kd" ] && break
+    [ "$dir" = "$_kd" ] && _skip=true && break
+  done
+  if [ "$_skip" = true ]; then
     echo "⏭ Skipping $(basename "$dir")"
     continue
   fi
