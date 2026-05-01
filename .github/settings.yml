@@ -1,0 +1,54 @@
+_extends: .github
+
+repository:
+  # See https://docs.github.com/en/rest/reference/repos#update-a-repository for all available settings.
+
+  # Updates the default branch for this repository, should be main or master
+  default_branch: main
+
+  #Optional
+  #allow_merge_commit: true
+  #allow_squash_merge: false
+  #allow_rebase_merge: false
+  #allow_auto_merge: false
+
+  allow_update_branch: true
+  delete_branch_on_merge: true
+
+branches:
+  # branch to apply protection rules, should be main or master
+  - name: main
+    # See https://docs.github.com/en/rest/branches/branch-protection#update-branch-protection for all available settings.
+    protection:
+      # Required. Require at least one approving review on a pull request, before merging. Set to null to disable.
+      required_pull_request_reviews:
+        # The number of approvals required. (1-6)
+        required_approving_review_count: 1
+        # Dismiss approved reviews automatically when a new commit is pushed.
+        dismiss_stale_reviews: true
+        require_last_push_approval: true
+        # Blocks merge until code owners have reviewed.
+        require_code_owner_reviews: false
+        # Specify which users and teams can dismiss pull request reviews. Pass an empty dismissal_restrictions object to disable.
+        dismissal_restrictions: {}
+        # Default allows Admin through
+        bypass_pull_request_allowances:
+          users: []
+          teams: []
+          apps: []
+
+      # Required. Require status checks to pass before merging. Set to null to disable
+      required_status_checks:
+        # Required. Require branches to be up to date before merging.
+        strict: true
+        # Required. The list of status checks to require in order to merge into this branch. Add your required workflows.
+        contexts: []
+      # Required. Enforce all configured restrictions for administrators. Set to true to enforce required status checks for repository administrators. Set to null to disable.
+      enforce_admins: false
+      # Prevent merge commits from being pushed to matching branches
+      required_linear_history: false
+      # Required. Restrict who can push to this branch. Set to null to disable. Default allows Maintainers and Admin through.
+      restrictions:
+        users: []
+        teams: []
+        apps: []
