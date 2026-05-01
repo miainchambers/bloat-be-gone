@@ -6,7 +6,7 @@ set -uo pipefail
 # bloat-be-gone (team-safe CLI tool)
 # ============================================
 
-readonly VERSION="1.4.0" # x-release-please-version
+readonly VERSION="1.4.1" # x-release-please-version
 
 # --- OS detection ---
 _os() {

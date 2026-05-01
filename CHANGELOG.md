@@ -6,6 +6,13 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.4.1](https://github.com/miainchambers/bloat-be-gone/compare/v1.4.0...v1.4.1) (2026-05-01)
+
+
+### ### Fixed
+
+* replace mapfile with bash 3.2-compatible while-read loop ([a0e5938](https://github.com/miainchambers/bloat-be-gone/commit/a0e59385ecce44d2761f1cb974970a146314771f))
+
 ## [1.4.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.3.0...v1.4.0) (2026-05-01)
 
 
