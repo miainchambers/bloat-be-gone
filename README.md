@@ -204,8 +204,6 @@ All PRs targeting `main` require:
 - ✅ ShellCheck lint passing
 - ✅ BATS tests passing
 
-> Configure in GitHub → Settings → Branches → Add rule for `main`.
-
 ---
 
 ## �🪤 License
