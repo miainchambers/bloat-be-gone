@@ -128,7 +128,7 @@ elif [ "$CLEAN_ALL" = true ]; then
   echo "⚠️ --all mode enabled — all projects will be cleaned"
 
 else
-  if command -v fzf >/dev/null 2>&1; then
+  if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
     echo "🔍 Using fzf selection"
 
     KEEP_DIR=$(
