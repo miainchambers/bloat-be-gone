@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+# bgb — thin command wrapper for bloat-be-gone
+# Usage: bgb [clean|update|doctor|version|help]
+
+COMMAND="${1:-help}"
+shift 2>/dev/null || true
+
+case "$COMMAND" in
+  clean)
+    exec bloat-be-gone "$@"
+    ;;
+
+  update)
+    REPO="https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main"
+    curl -fsSL "$REPO/update.sh" | bash
+    ;;
+
+  doctor)
+    echo "🔍 bloat-be-gone doctor"
+    echo ""
+    command -v bloat-be-gone &>/dev/null \
+      && echo "✅ bloat-be-gone installed ($(bloat-be-gone --version))" \
+      || echo "❌ bloat-be-gone not found"
+    command -v bgb &>/dev/null \
+      && echo "✅ bgb installed" \
+      || echo "❌ bgb not found"
+    command -v fzf &>/dev/null \
+      && echo "✅ fzf installed" \
+      || echo "⚠️  fzf not found (optional — install with: brew install fzf)"
+    command -v npm &>/dev/null \
+      && echo "✅ npm found" \
+      || echo "⚠️  npm not found"
+    command -v yarn &>/dev/null \
+      && echo "✅ yarn found" \
+      || echo "⚠️  yarn not found"
+    command -v pnpm &>/dev/null \
+      && echo "✅ pnpm found" \
+      || echo "⚠️  pnpm not found"
+    echo ""
+    echo "📂 Install dir: $HOME/.local/bin"
+    if echo ":$PATH:" | grep -q ":$HOME/.local/bin:"; then
+      echo "✅ $HOME/.local/bin is on PATH"
+    else
+      echo "⚠️  $HOME/.local/bin is NOT on PATH — commands may not be found"
+      echo "   Fix: add to your shell rc: export PATH=\"\$HOME/.local/bin:\$PATH\""
+    fi
+    ;;
+
+  uninstall)
+    INSTALL_DIR="$HOME/.local/bin"
+    echo "🗑️  Uninstalling bloat-be-gone..."
+    removed=0
+    for bin in bloat-be-gone bgb; do
+      if [ -f "$INSTALL_DIR/$bin" ]; then
+        rm -f "$INSTALL_DIR/$bin"
+        echo "  ✅ Removed $INSTALL_DIR/$bin"
+        removed=$((removed + 1))
+      else
+        echo "  ⚠️  Not found: $INSTALL_DIR/$bin"
+      fi
+    done
+    if [ $removed -gt 0 ]; then
+      echo ""
+      echo "✅ Uninstalled. You may also remove from your shell rc:"
+      echo "   export PATH=\"\$HOME/.local/bin:\$PATH\""
+    else
+      echo "⚠️  Nothing was removed"
+    fi
+    ;;
+
+  version)
+    exec bloat-be-gone --version
+    ;;
+
+  help|--help|-h|"")
+    echo "Usage: bgb <command> [options]"
+    echo ""
+    echo "Commands:"
+    echo "  clean       Clean node_modules, lockfiles, and caches"
+    echo "  update      Update bloat-be-gone to the latest version"
+    echo "  uninstall   Remove bloat-be-gone and bgb from your system"
+    echo "  doctor      Check dependencies and installation health"
+    echo "  version     Show current version"
+    echo "  help        Show this help"
+    echo ""
+    echo "Options (passed through to clean):"
+    echo "  --keep <project>   Keep a specific project untouched"
+    echo "  --all              Clean all projects (no exclusions)"
+    echo "  --dry-run          Preview only — nothing is deleted"
+    echo ""
+    echo "Examples:"
+    echo "  bgb clean"
+    echo "  bgb clean --keep api"
+    echo "  bgb clean --dry-run"
+    echo "  bgb update"
+    echo "  bgb doctor"
+    ;;
+
+  *)
+    echo "❌ Unknown command: $COMMAND"
+    echo "Run 'bgb help' for usage"
+    exit 1
+    ;;
+esac
