@@ -80,7 +80,7 @@ if [ -n "$WORKSPACE_ARG" ]; then
 else
   BASE_DIR="$(pwd)"
 
-  if command -v fzf >/dev/null 2>&1; then
+  if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
     read -r -p "Select workspace root? (y/N): " PICK_WS
 
     if [[ "$PICK_WS" == "y" || "$PICK_WS" == "Y" ]]; then
@@ -149,6 +149,17 @@ elif [ "$CLEAN_ALL" = true ]; then
   echo "⚠️ --all mode enabled — all projects will be cleaned"
 
 else
+  # Offer to install fzf if missing, brew is available, and we're in a terminal
+  if ! command -v fzf >/dev/null 2>&1 && [ -t 0 ] && command -v brew >/dev/null 2>&1; then
+    echo "💡 fzf is not installed — it gives you a much nicer project selector."
+    read -r -p "   Install fzf now with brew? (y/N): " INSTALL_FZF
+    if [[ "$INSTALL_FZF" == "y" || "$INSTALL_FZF" == "Y" ]]; then
+      brew install fzf
+      hash -r 2>/dev/null || true
+      echo ""
+    fi
+  fi
+
   if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
     echo "🔍 Using fzf selection"
 
@@ -163,7 +174,8 @@ else
     )
 
   else
-    echo "⚠️ fzf not installed — fallback selector"
+    [ -t 0 ] && echo "⚠️ fzf not available — using fallback selector (brew install fzf for a better experience)"
+    echo ""
 
     PROJECT_NAMES=()
     for p in "${PROJECTS[@]}"; do
