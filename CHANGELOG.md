@@ -6,6 +6,15 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.2.1](https://github.com/miainchambers/bloat-be-gone/compare/v1.2.0...v1.2.1) (2026-05-01)
+
+
+### ### Fixed
+
+* fixed shasum on Linux ([b19407a](https://github.com/miainchambers/bloat-be-gone/commit/b19407a027ae86c0b1f1d5de4087969661e10975))
+* fixed shasum on Linux ([b19407a](https://github.com/miainchambers/bloat-be-gone/commit/b19407a027ae86c0b1f1d5de4087969661e10975))
+* fixed shasum on Linux ([097ba31](https://github.com/miainchambers/bloat-be-gone/commit/097ba31cec60e670de64dc9d2bafff8bf8cc9e72))
+
 ## [1.2.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.1.0...v1.2.0) (2026-05-01)
 
 
