@@ -20,9 +20,19 @@ case "$COMMAND" in
     ;;
 
   update)
-    REPO="https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main"
+    # Homebrew-managed installs must be upgraded via brew
+    if command -v brew >/dev/null 2>&1 && brew list bloat-be-gone >/dev/null 2>&1; then
+      echo "⚠️  Installed via Homebrew — run: brew upgrade bloat-be-gone"
+      exit 0
+    fi
+    _LATEST_TAG=$(curl -fsSL "https://api.github.com/repos/miainchambers/bloat-be-gone/releases/latest" \
+      | grep '"tag_name"' | cut -d'"' -f4)
+    if [ -z "$_LATEST_TAG" ]; then
+      echo "❌ Could not fetch latest release from GitHub."
+      exit 1
+    fi
     _TMP="$(mktemp)"
-    curl -fsSL "$REPO/update.sh" -o "$_TMP"
+    curl -fsSL "https://raw.githubusercontent.com/miainchambers/bloat-be-gone/$_LATEST_TAG/update.sh" -o "$_TMP"
     chmod +x "$_TMP"
     exec bash "$_TMP"
     ;;

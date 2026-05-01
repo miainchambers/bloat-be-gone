@@ -12,7 +12,7 @@ jobs:
     name: Lint (ShellCheck)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install ShellCheck
         run: sudo apt-get install -y shellcheck
@@ -33,10 +33,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: lint
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install BATS (Ubuntu)
         if: matrix.os == 'ubuntu-latest'

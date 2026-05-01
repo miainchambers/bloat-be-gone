@@ -10,7 +10,7 @@ HOOKS_DIR="$REPO_ROOT/.git/hooks"
 
 echo "🔧 Installing git hooks..."
 
-for hook in pre-commit pre-push; do
+for hook in pre-commit commit-msg pre-push; do
   src="$HOOKS_SRC/$hook"
   dest="$HOOKS_DIR/$hook"
 
@@ -26,5 +26,6 @@ done
 
 echo ""
 echo "✅ Git hooks installed."
-echo "   pre-commit: ShellCheck on all shell files"
-echo "   pre-push:   BATS test suite"
+echo "   pre-commit:  ShellCheck on all shell files"
+echo "   commit-msg:  Conventional commits format check"
+echo "   pre-push:    BATS test suite"

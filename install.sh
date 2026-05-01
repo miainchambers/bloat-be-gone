@@ -44,6 +44,25 @@ if ! echo ":$PATH:" | grep -q ":$INSTALL_DIR:"; then
   fi
 fi
 
+# Install shell completions
+case "$SHELL" in
+  */zsh)
+    COMPLETION_DIR="${ZSH_CUSTOM:-$HOME/.zsh}/completions"
+    mkdir -p "$COMPLETION_DIR"
+    curl -fsSL "$REPO/completions/bgb.zsh" -o "$COMPLETION_DIR/_bgb"
+    echo "🔧 Installed zsh completion to $COMPLETION_DIR/_bgb"
+    echo "   If not already present, add to ~/.zshrc:"
+    echo "     fpath=(\$HOME/.zsh/completions \$fpath)"
+    echo "     autoload -Uz compinit && compinit"
+    ;;
+  */bash)
+    COMPLETION_DIR="$HOME/.local/share/bash-completion/completions"
+    mkdir -p "$COMPLETION_DIR"
+    curl -fsSL "$REPO/completions/bgb.bash" -o "$COMPLETION_DIR/bgb"
+    echo "🔧 Installed bash completion to $COMPLETION_DIR/bgb"
+    ;;
+esac
+
 echo ""
 echo "✅ Installed: bloat-be-gone + bgb ($LATEST_TAG)"
 echo ""
