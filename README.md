@@ -22,7 +22,18 @@ It safely removes `node_modules`, lockfiles, and build caches — while letting 
 
 ## 📦 Installation
 
-One command — installs `bloat-be-gone` and the `bgb` wrapper to `~/.local/bin`:
+### macOS — Homebrew (recommended)
+
+```bash
+brew tap miainchambers/bloat-be-gone
+brew install bloat-be-gone
+```
+
+Updates via `brew upgrade bloat-be-gone`. No `bgb update` needed.
+
+### macOS / Linux / WSL — curl installer
+
+Installs `bloat-be-gone` and the `bgb` wrapper to `~/.local/bin`:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main/install.sh | bash
@@ -45,6 +56,7 @@ bloat-be-gone runs inside [WSL](https://learn.microsoft.com/en-us/windows/wsl/in
 3. The tool auto-detects WSL and uses `apt`/`dnf` for any dependency installs
 
 > Your Windows filesystem is accessible at `/mnt/c/...` — you can point `--workspace` there:
+>
 > ```bash
 > bgb clean --workspace /mnt/c/Users/yourname/projects
 > ```
@@ -249,13 +261,13 @@ feature/my-thing  →  PR to dev  →  PR to main  →  release-please opens Rel
 
 This repo uses [Conventional Commits](https://www.conventionalcommits.org/). Your commit messages determine what goes in the CHANGELOG and how the version is bumped:
 
-| Prefix | Effect | Example |
-|--------|--------|---------|
-| `feat:` | minor bump (1.0.0 → 1.1.0) | `feat: add --exclude flag` |
-| `fix:` | patch bump (1.0.0 → 1.0.1) | `fix: handle spaces in project names` |
-| `feat!:` or `fix!:` | major bump (1.0.0 → 2.0.0) | `feat!: rename --keep to --preserve` |
-| `chore:`, `ci:`, `test:`, `refactor:` | no release | `chore: update dependencies` |
-| `docs:` | listed in CHANGELOG, no version bump | `docs: add WSL install guide` |
+| Prefix                                | Effect                               | Example                               |
+| ------------------------------------- | ------------------------------------ | ------------------------------------- |
+| `feat:`                               | minor bump (1.0.0 → 1.1.0)           | `feat: add --exclude flag`            |
+| `fix:`                                | patch bump (1.0.0 → 1.0.1)           | `fix: handle spaces in project names` |
+| `feat!:` or `fix!:`                   | major bump (1.0.0 → 2.0.0)           | `feat!: rename --keep to --preserve`  |
+| `chore:`, `ci:`, `test:`, `refactor:` | no release                           | `chore: update dependencies`          |
+| `docs:`                               | listed in CHANGELOG, no version bump | `docs: add WSL install guide`         |
 
 ### Releasing
 
