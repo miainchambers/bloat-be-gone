@@ -28,15 +28,22 @@ jobs:
           shellcheck hooks/install.sh
 
   test:
-    name: Tests (BATS)
-    runs-on: ubuntu-latest
+    name: Tests (BATS) on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     needs: lint
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install BATS
-        run: |
-          sudo apt-get install -y bats
+      - name: Install BATS (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install -y bats
+
+      - name: Install BATS (macOS)
+        if: matrix.os == 'macos-latest'
+        run: brew install bats-core
 
       - name: Make scripts executable
         run: chmod +x bloat-be-gone.sh bin/bgb install.sh update.sh uninstall.sh

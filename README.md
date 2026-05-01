@@ -4,7 +4,7 @@ A fast, interactive CLI tool for cleaning up Node.js workspace bloat across mult
 
 It safely removes `node_modules`, lockfiles, and build caches — while letting you keep one project untouched.
 
-> **Platform:** macOS and Linux. Windows is not supported (requires bash).
+> **Platform:** macOS, Linux, and Windows (via WSL). Native Windows (cmd/PowerShell) is not supported.
 
 ---
 
@@ -35,6 +35,19 @@ source ~/.zshrc   # or ~/.bashrc
 ```
 
 > **Note:** The installer automatically adds `~/.local/bin` to your `$PATH` if it isn't already there.
+
+### Windows (WSL)
+
+bloat-be-gone runs inside [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (Windows Subsystem for Linux). Native cmd/PowerShell are not supported.
+
+1. Open your WSL terminal (Ubuntu, Debian, etc.)
+2. Run the same install command above
+3. The tool auto-detects WSL and uses `apt`/`dnf` for any dependency installs
+
+> Your Windows filesystem is accessible at `/mnt/c/...` — you can point `--workspace` there:
+> ```bash
+> bgb clean --workspace /mnt/c/Users/yourname/projects
+> ```
 
 ---
 

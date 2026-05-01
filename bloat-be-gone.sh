@@ -10,24 +10,30 @@ VERSION="1.0.0"
 _os() {
   case "$(uname -s)" in
     Darwin) echo "macos" ;;
-    Linux)  echo "linux" ;;
-    *)      echo "other" ;;
+    Linux)
+      if grep -qi microsoft /proc/version 2>/dev/null; then
+        echo "wsl"
+      else
+        echo "linux"
+      fi
+      ;;
+    *) echo "other" ;;
   esac
 }
 
 _fzf_install_hint() {
   case "$(_os)" in
-    macos) echo "brew install fzf" ;;
-    linux) echo "sudo apt install fzf  # or: sudo dnf install fzf" ;;
-    *)     echo "see https://github.com/junegunn/fzf#installation" ;;
+    macos)     echo "brew install fzf" ;;
+    linux|wsl) echo "sudo apt install fzf  # or: sudo dnf install fzf" ;;
+    *)         echo "see https://github.com/junegunn/fzf#installation" ;;
   esac
 }
 
 _shellcheck_install_hint() {
   case "$(_os)" in
-    macos) echo "brew install shellcheck" ;;
-    linux) echo "sudo apt install shellcheck  # or: sudo dnf install shellcheck" ;;
-    *)     echo "see https://github.com/koalaman/shellcheck#installing" ;;
+    macos)     echo "brew install shellcheck" ;;
+    linux|wsl) echo "sudo apt install shellcheck  # or: sudo dnf install shellcheck" ;;
+    *)         echo "see https://github.com/koalaman/shellcheck#installing" ;;
   esac
 }
 
