@@ -45,6 +45,7 @@ DRY_RUN=false
 CLEAN_ALL=false
 SHOW_VERSION=false
 NO_DIST=false
+CLEAN_MOBILE=false
 WORKSPACE_ARG=""
 
 while [[ $# -gt 0 ]]; do
@@ -78,6 +79,10 @@ while [[ $# -gt 0 ]]; do
       WORKSPACE_ARG="$2"
       shift 2
       ;;
+    --mobile)
+      CLEAN_MOBILE=true
+      shift
+      ;;
     --version)
       SHOW_VERSION=true
       shift
@@ -90,6 +95,7 @@ while [[ $# -gt 0 ]]; do
       echo "  --all                 Clean all projects (no exclusions)"
       echo "  --dry-run             Preview only — nothing is deleted"
       echo "  --no-dist             Skip dist/ and build/ directories"
+      echo "  --mobile              Also clean Xcode, iOS Simulator, and Gradle caches"
       echo "  --workspace <path>    Set workspace root (skips interactive prompt)"
       echo "  --version             Show current version"
       echo "  --help                Show this help"
@@ -309,6 +315,43 @@ echo "🗑 pnpm store..."
 pnpm store prune 2>/dev/null || true
 
 rm -rf "$HOME/.npm" "$HOME/.pnpm-store" "$HOME/.cache/yarn" "$HOME/.yarn"
+
+# --- Mobile / IDE caches ---
+if [ "$CLEAN_MOBILE" = true ]; then
+  echo ""
+  echo "📱 Cleaning mobile & IDE caches..."
+
+  if [ "$(_os)" = "macos" ]; then
+    echo "🗑 Xcode DerivedData..."
+    rm -rf "$HOME/Library/Developer/Xcode/DerivedData"
+
+    echo "🗑 Xcode caches..."
+    rm -rf "$HOME/Library/Caches/com.apple.dt.Xcode"
+
+    echo "🗑 iOS Simulator caches..."
+    rm -rf "$HOME/Library/Developer/CoreSimulator/Caches"
+
+    if command -v xcrun >/dev/null 2>&1; then
+      echo "🗑 Removing unavailable simulators..."
+      xcrun simctl delete unavailable 2>/dev/null || true
+    fi
+
+    for _as_cache in "$HOME/Library/Caches/Google/"/AndroidStudio*; do
+      [ -d "$_as_cache" ] && echo "🗑 Android Studio cache: $(basename "$_as_cache")..." && rm -rf "$_as_cache"
+    done
+  fi
+
+  if [ -d "$HOME/.gradle" ]; then
+    echo "🗑 Gradle caches..."
+    rm -rf "$HOME/.gradle/caches"
+    rm -rf "$HOME/.gradle/daemon"
+  fi
+
+  if [ -d "$HOME/.android/cache" ]; then
+    echo "🗑 Android cache..."
+    rm -rf "$HOME/.android/cache"
+  fi
+fi
 
 # --- Cleanup ---
 for dir in "${PROJECTS[@]}"; do

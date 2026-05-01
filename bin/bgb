@@ -123,6 +123,7 @@ case "$COMMAND" in
     echo "  --all                   Clean all projects (no exclusions)"
     echo "  --dry-run               Preview only — nothing is deleted"
     echo "  --no-dist               Skip dist/ and build/ directories"
+    echo "  --mobile                Also clean Xcode, iOS Simulator, and Gradle caches"
     echo "  --workspace <path>      Set workspace root explicitly"
     echo ""
     echo "Examples:"

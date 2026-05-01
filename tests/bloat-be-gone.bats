@@ -126,3 +126,42 @@ teardown() {
   [ "$status" -eq 1 ]
   [ -d "$WORKSPACE/project-alpha/node_modules" ]
 }
+
+@test "--mobile flag is accepted without error" {
+  run bash "$SCRIPT" --workspace "$WORKSPACE" --all --dry-run --mobile
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ "DRY RUN" ]]
+}
+
+@test "--mobile cleans Gradle caches when present" {
+  FAKE_HOME="$(mktemp -d)"
+  mkdir -p "$FAKE_HOME/.gradle/caches/modules-1"
+  mkdir -p "$FAKE_HOME/.gradle/daemon/8.0"
+
+  HOME="$FAKE_HOME" run bash -c "echo 'y' | bash '$SCRIPT' --workspace '$WORKSPACE' --all --mobile"
+  [ "$status" -eq 0 ]
+  [ ! -d "$FAKE_HOME/.gradle/caches" ]
+  [ ! -d "$FAKE_HOME/.gradle/daemon" ]
+  rm -rf "$FAKE_HOME"
+}
+
+@test "--mobile cleans Android cache when present" {
+  FAKE_HOME="$(mktemp -d)"
+  mkdir -p "$FAKE_HOME/.android/cache"
+  touch "$FAKE_HOME/.android/cache/somefile"
+
+  HOME="$FAKE_HOME" run bash -c "echo 'y' | bash '$SCRIPT' --workspace '$WORKSPACE' --all --mobile"
+  [ "$status" -eq 0 ]
+  [ ! -d "$FAKE_HOME/.android/cache" ]
+  rm -rf "$FAKE_HOME"
+}
+
+@test "without --mobile Gradle caches are not touched" {
+  FAKE_HOME="$(mktemp -d)"
+  mkdir -p "$FAKE_HOME/.gradle/caches/modules-1"
+
+  HOME="$FAKE_HOME" run bash -c "echo 'y' | bash '$SCRIPT' --workspace '$WORKSPACE' --all"
+  [ "$status" -eq 0 ]
+  [ -d "$FAKE_HOME/.gradle/caches" ]
+  rm -rf "$FAKE_HOME"
+}

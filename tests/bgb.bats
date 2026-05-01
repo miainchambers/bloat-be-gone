@@ -72,3 +72,20 @@ BGG="$BATS_TEST_DIRNAME/../bin/bgb"
   [[ "$output" =~ "DRY RUN" ]]
   rm -rf "$WORKSPACE"
 }
+
+@test "bgb clean passes --mobile through to bloat-be-gone" {
+  WORKSPACE="$(mktemp -d)"
+  mkdir -p "$WORKSPACE/project-x"
+  TMPBIN="$(mktemp -d)"
+  ln -s "$BATS_TEST_DIRNAME/../bloat-be-gone.sh" "$TMPBIN/bloat-be-gone"
+  PATH="$TMPBIN:$PATH" run bash "$BGG" clean --workspace "$WORKSPACE" --all --dry-run --mobile
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ "DRY RUN" ]]
+  rm -rf "$WORKSPACE" "$TMPBIN"
+}
+
+@test "bgb help lists --mobile option" {
+  run bash "$BGG" help
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ "--mobile" ]]
+}
