@@ -4,6 +4,8 @@ A fast, interactive CLI tool for cleaning up Node.js workspace bloat across mult
 
 It safely removes `node_modules`, lockfiles, and build caches — while letting you keep one project untouched.
 
+> **Platform:** macOS and Linux. Windows is not supported (requires bash).
+
 ---
 
 ## 🚀 What it does
@@ -37,6 +39,16 @@ source ~/.zshrc   # or ~/.bashrc
 ---
 
 ## 🧑‍💻 Usage
+
+> **Before running:** `cd` into the folder that **contains** your projects — `bgb clean` treats your current directory as the workspace root, with each subdirectory treated as a separate project.
+>
+> For example, if your projects live at `~/projects/api`, `~/projects/web`, `~/projects/mobile` — run `cd ~/projects` first.
+>
+> Or skip the `cd` entirely with `--workspace`:
+>
+> ```bash
+> bgb clean --workspace ~/projects
+> ```
 
 Use the `bgb` command wrapper for the cleanest experience:
 
@@ -77,14 +89,24 @@ If no flags are provided:
 Install fzf:
 
 ```bash
+# macOS
 brew install fzf
+
+# Ubuntu / Debian
+sudo apt install fzf
+
+# Fedora / RHEL
+sudo dnf install fzf
 ```
+
+> If fzf isn't installed, `bgb` will offer to install it automatically when you first run it (on supported systems), then fall back to a simple numbered selector.
 
 ---
 
 ## 🧠 Example workflow
 
 ```bash
+# cd into the folder that CONTAINS your projects (not into a project itself)
 cd ~/Documents/workspaces
 bgb clean
 ```
@@ -186,8 +208,14 @@ This installs pre-commit (ShellCheck) and pre-push (BATS tests) hooks automatica
 ### Requirements
 
 ```bash
+# macOS
 brew install shellcheck fzf
-npm install -g bats
+
+# Ubuntu / Debian
+sudo apt install shellcheck fzf
+
+# Fedora / RHEL
+sudo dnf install ShellCheck fzf
 ```
 
 ### Running tests manually

@@ -35,9 +35,16 @@ case "$COMMAND" in
     command -v bgb &>/dev/null \
       && echo "✅ bgb installed" \
       || echo "❌ bgb not found"
-    command -v fzf &>/dev/null \
-      && echo "✅ fzf installed" \
-      || echo "⚠️  fzf not found (optional — install with: brew install fzf)"
+    if command -v fzf &>/dev/null; then
+      echo "✅ fzf installed"
+    else
+      case "$(uname -s)" in
+        Darwin) _fzf_hint="brew install fzf" ;;
+        Linux)  _fzf_hint="sudo apt install fzf  # or: sudo dnf install fzf" ;;
+        *)      _fzf_hint="see https://github.com/junegunn/fzf" ;;
+      esac
+      echo "⚠️  fzf not found (optional — $_fzf_hint)"
+    fi
     command -v npm &>/dev/null \
       && echo "✅ npm found" \
       || echo "⚠️  npm not found"

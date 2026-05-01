@@ -15,8 +15,13 @@ SHELL_FILES=(
 )
 
 if ! command -v shellcheck >/dev/null 2>&1; then
+  case "$(uname -s)" in
+    Darwin) _sc_hint="brew install shellcheck" ;;
+    Linux)  _sc_hint="sudo apt install shellcheck  # or: sudo dnf install shellcheck" ;;
+    *)      _sc_hint="see https://github.com/koalaman/shellcheck#installing" ;;
+  esac
   echo "⚠️  shellcheck not found — skipping lint"
-  echo "   Install: brew install shellcheck"
+  echo "   Install: $_sc_hint"
   exit 0
 fi
 

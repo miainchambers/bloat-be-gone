@@ -6,6 +6,31 @@
 
 VERSION="1.0.0"
 
+# --- OS detection ---
+_os() {
+  case "$(uname -s)" in
+    Darwin) echo "macos" ;;
+    Linux)  echo "linux" ;;
+    *)      echo "other" ;;
+  esac
+}
+
+_fzf_install_hint() {
+  case "$(_os)" in
+    macos) echo "brew install fzf" ;;
+    linux) echo "sudo apt install fzf  # or: sudo dnf install fzf" ;;
+    *)     echo "see https://github.com/junegunn/fzf#installation" ;;
+  esac
+}
+
+_shellcheck_install_hint() {
+  case "$(_os)" in
+    macos) echo "brew install shellcheck" ;;
+    linux) echo "sudo apt install shellcheck  # or: sudo dnf install shellcheck" ;;
+    *)     echo "see https://github.com/koalaman/shellcheck#installing" ;;
+  esac
+}
+
 # --- Flags ---
 KEEP_OVERRIDE=""
 DRY_RUN=false
@@ -149,14 +174,25 @@ elif [ "$CLEAN_ALL" = true ]; then
   echo "⚠️ --all mode enabled — all projects will be cleaned"
 
 else
-  # Offer to install fzf if missing, brew is available, and we're in a terminal
-  if ! command -v fzf >/dev/null 2>&1 && [ -t 0 ] && command -v brew >/dev/null 2>&1; then
-    echo "💡 fzf is not installed — it gives you a much nicer project selector."
-    read -r -p "   Install fzf now with brew? (y/N): " INSTALL_FZF
-    if [[ "$INSTALL_FZF" == "y" || "$INSTALL_FZF" == "Y" ]]; then
-      brew install fzf
-      hash -r 2>/dev/null || true
-      echo ""
+  # Offer to install fzf if missing, a supported package manager is available, and we're in a terminal
+  if ! command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
+    _PKG_MGR=""
+    command -v brew >/dev/null 2>&1 && _PKG_MGR="brew"
+    command -v apt  >/dev/null 2>&1 && [ -z "$_PKG_MGR" ] && _PKG_MGR="apt"
+    command -v dnf  >/dev/null 2>&1 && [ -z "$_PKG_MGR" ] && _PKG_MGR="dnf"
+
+    if [ -n "$_PKG_MGR" ]; then
+      echo "💡 fzf is not installed — it gives you a much nicer project selector."
+      read -r -p "   Install fzf now? (y/N): " INSTALL_FZF
+      if [[ "$INSTALL_FZF" == "y" || "$INSTALL_FZF" == "Y" ]]; then
+        case "$_PKG_MGR" in
+          brew) brew install fzf ;;
+          apt)  sudo apt install -y fzf ;;
+          dnf)  sudo dnf install -y fzf ;;
+        esac
+        hash -r 2>/dev/null || true
+        echo ""
+      fi
     fi
   fi
 
@@ -174,7 +210,7 @@ else
     )
 
   else
-    [ -t 0 ] && echo "⚠️ fzf not available — using fallback selector (brew install fzf for a better experience)"
+    [ -t 0 ] && echo "⚠️ fzf not available — using fallback selector ($(_fzf_install_hint))"
     echo ""
 
     PROJECT_NAMES=()
