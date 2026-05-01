@@ -6,6 +6,26 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.1.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.0.0...v1.1.0) (2026-05-01)
+
+
+### ### Added
+
+* add homebrew tap and cross-platform support ([364f521](https://github.com/miainchambers/bloat-be-gone/commit/364f521c16edd3f36d31ee4075644fcee2d026d7))
+* add homebrew tap and cross-platform support ([364f521](https://github.com/miainchambers/bloat-be-gone/commit/364f521c16edd3f36d31ee4075644fcee2d026d7))
+* add homebrew tap and cross-platform support ([6ef1831](https://github.com/miainchambers/bloat-be-gone/commit/6ef18319dd8ff3c693b95a97ac6e936d5ee9bc22))
+* Added Homebrew support for Mac OS ([c2863e9](https://github.com/miainchambers/bloat-be-gone/commit/c2863e902af833174391da72eb181632f3e672b0))
+* Automated releases and changelog ([c434547](https://github.com/miainchambers/bloat-be-gone/commit/c434547eed26d6c94709277d67c9ea3fe0601e71))
+* Enforcing PRs into main from dev branch only ([cfbbda6](https://github.com/miainchambers/bloat-be-gone/commit/cfbbda6a428d76850e18db20f798d1689c30cdca))
+* homebrew and branch protection ([8a6bb99](https://github.com/miainchambers/bloat-be-gone/commit/8a6bb99034c0abffb48358c9a448992a3b923f17))
+* homebrew tap ([8645faf](https://github.com/miainchambers/bloat-be-gone/commit/8645faf5e4b478a9d576b5a68c0aa61b43c07b91))
+* homebrew tap ([8645faf](https://github.com/miainchambers/bloat-be-gone/commit/8645faf5e4b478a9d576b5a68c0aa61b43c07b91))
+
+
+### ### Fixed
+
+* use packages format in release-please config ([4db1d86](https://github.com/miainchambers/bloat-be-gone/commit/4db1d86c6a3493103df4f0ca8eb1faab310b3051))
+
 ## [1.0.0] - 2026-05-01
 
 ### Added
