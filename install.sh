@@ -23,6 +23,7 @@ if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
   [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
 
   if ! grep -q "$INSTALL_DIR" "$SHELL_RC" 2>/dev/null; then
+    # shellcheck disable=SC2016
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
     echo "🔧 Added $INSTALL_DIR to PATH in $SHELL_RC"
     echo "   Run: source $SHELL_RC"

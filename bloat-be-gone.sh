@@ -4,7 +4,6 @@
 # bloat-be-gone (team-safe CLI tool)
 # ============================================
 
-REPO_URL="https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main"
 VERSION="1.0.0"
 
 # --- Flags ---
@@ -90,7 +89,7 @@ if [ "$REAL_BASE" = "$REAL_HOME" ]; then
   echo ""
   echo "⚠️  WARNING: You are about to clean your home directory ($HOME)."
   echo "   This will affect ALL top-level folders."
-  read -p "   Are you sure? Type yes to continue: " HOME_CONFIRM
+  read -r -p "   Are you sure? Type yes to continue: " HOME_CONFIRM
   if [[ "$HOME_CONFIRM" != "yes" ]]; then
     echo "❌ Aborted"
     exit 0
@@ -189,7 +188,7 @@ if [ "$DRY_RUN" = true ]; then
 fi
 
 # --- Confirm ---
-read -p "⚠️ Proceed? (y/N): " CONFIRM
+read -r -p "⚠️ Proceed? (y/N): " CONFIRM
 
 if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
   echo "❌ Aborted"
