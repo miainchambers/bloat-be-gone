@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# pre-push hook: runs the BATS test suite before each push.
+# Install via: bash hooks/install.sh
+
+if ! command -v bats >/dev/null 2>&1; then
+  echo "⚠️  bats not found — skipping tests"
+  echo "   Install: npm install -g bats"
+  exit 0
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+echo "🧪 Running tests before push..."
+
+if ! bats "$REPO_ROOT/tests/"; then
+  echo ""
+  echo "❌ Tests failed. Fix before pushing."
+  exit 1
+fi
+
+echo "✅ All tests passed"

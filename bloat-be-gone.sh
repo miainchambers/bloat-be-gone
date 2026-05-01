@@ -13,6 +13,7 @@ DRY_RUN=false
 CLEAN_ALL=false
 SHOW_VERSION=false
 NO_DIST=false
+WORKSPACE_ARG=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -32,6 +33,10 @@ while [[ $# -gt 0 ]]; do
       NO_DIST=true
       shift
       ;;
+    --workspace)
+      WORKSPACE_ARG="$2"
+      shift 2
+      ;;
     --version)
       SHOW_VERSION=true
       shift
@@ -49,21 +54,25 @@ if [ "$SHOW_VERSION" = true ]; then
   exit 0
 fi
 
-# --- Workspace picker ---
-BASE_DIR="$(pwd)"
+# --- Workspace ---
+if [ -n "$WORKSPACE_ARG" ]; then
+  BASE_DIR="$WORKSPACE_ARG"
+else
+  BASE_DIR="$(pwd)"
 
-if command -v fzf >/dev/null 2>&1; then
-  read -p "Select workspace root? (y/N): " PICK_WS
+  if command -v fzf >/dev/null 2>&1; then
+    read -r -p "Select workspace root? (y/N): " PICK_WS
 
-  if [[ "$PICK_WS" == "y" || "$PICK_WS" == "Y" ]]; then
-    BASE_DIR=$(
-      find "$HOME" -maxdepth 3 -type d 2>/dev/null |
-      fzf --prompt="Select workspace root: "
-    )
+    if [[ "$PICK_WS" == "y" || "$PICK_WS" == "Y" ]]; then
+      BASE_DIR=$(
+        find "$HOME" -maxdepth 3 -type d 2>/dev/null |
+        fzf --prompt="Select workspace root: "
+      )
 
-    if [ -z "$BASE_DIR" ]; then
-      echo "❌ No workspace selected"
-      exit 1
+      if [ -z "$BASE_DIR" ]; then
+        echo "❌ No workspace selected"
+        exit 1
+      fi
     fi
   fi
 fi

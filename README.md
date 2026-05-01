@@ -171,6 +171,43 @@ rm ~/.local/bin/bloat-be-gone ~/.local/bin/bgb
 
 ---
 
-## 🪤 License
+## � Contributing
+
+### Setup
+
+```bash
+git clone https://github.com/miainchambers/bloat-be-gone.git
+cd bloat-be-gone
+bash hooks/install.sh
+```
+
+This installs pre-commit (ShellCheck) and pre-push (BATS tests) hooks automatically.
+
+### Requirements
+
+```bash
+brew install shellcheck fzf
+npm install -g bats
+```
+
+### Running tests manually
+
+```bash
+bats tests/
+```
+
+### Branch protection
+
+All PRs targeting `main` require:
+
+- ✅ Approval from the repo owner
+- ✅ ShellCheck lint passing
+- ✅ BATS tests passing
+
+> Configure in GitHub → Settings → Branches → Add rule for `main`.
+
+---
+
+## �🪤 License
 
 MIT — use freely, modify, improve, break, rebuild.

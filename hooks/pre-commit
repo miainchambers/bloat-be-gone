@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# pre-commit hook: runs ShellCheck on all shell files before each commit.
+# Install via: bash hooks/install.sh
+
+SHELL_FILES=(
+  bloat-be-gone.sh
+  install.sh
+  update.sh
+  uninstall.sh
+  bin/bgb
+  hooks/pre-commit
+  hooks/pre-push
+  hooks/install.sh
+)
+
+if ! command -v shellcheck >/dev/null 2>&1; then
+  echo "⚠️  shellcheck not found — skipping lint"
+  echo "   Install: brew install shellcheck"
+  exit 0
+fi
+
+FAILED=0
+for file in "${SHELL_FILES[@]}"; do
+  if [ -f "$file" ] && ! shellcheck "$file"; then
+    FAILED=1
+  fi
+done
+
+if [ "$FAILED" -eq 1 ]; then
+  echo ""
+  echo "❌ ShellCheck failed. Fix the issues above before committing."
+  exit 1
+fi
+
+echo "✅ ShellCheck passed"
