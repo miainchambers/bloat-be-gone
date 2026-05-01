@@ -1,21 +1,52 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "release-type": "simple",
-  "changelog-sections": [
-    { "type": "feat",     "section": "### Added" },
-    { "type": "fix",      "section": "### Fixed" },
-    { "type": "perf",     "section": "### Performance" },
-    { "type": "revert",   "section": "### Reverted" },
-    { "type": "docs",     "section": "### Documentation" },
-    { "type": "chore",    "hidden": true },
-    { "type": "refactor", "hidden": true },
-    { "type": "test",     "hidden": true },
-    { "type": "ci",       "hidden": true }
-  ],
-  "extra-files": [
-    {
-      "type": "generic",
-      "path": "bloat-be-gone.sh"
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "changelog-sections": [
+        {
+          "type": "feat",
+          "section": "### Added"
+        },
+        {
+          "type": "fix",
+          "section": "### Fixed"
+        },
+        {
+          "type": "perf",
+          "section": "### Performance"
+        },
+        {
+          "type": "revert",
+          "section": "### Reverted"
+        },
+        {
+          "type": "docs",
+          "section": "### Documentation"
+        },
+        {
+          "type": "chore",
+          "hidden": true
+        },
+        {
+          "type": "refactor",
+          "hidden": true
+        },
+        {
+          "type": "test",
+          "hidden": true
+        },
+        {
+          "type": "ci",
+          "hidden": true
+        }
+      ],
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "bloat-be-gone.sh"
+        }
+      ]
     }
-  ]
+  }
 }
