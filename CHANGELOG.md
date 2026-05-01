@@ -6,6 +6,13 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.2.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.1.0...v1.2.0) (2026-05-01)
+
+
+### ### Added
+
+* add shell completions and homebrew tap support ([b2972a9](https://github.com/miainchambers/bloat-be-gone/commit/b2972a911cc01d6a0354f7e296a3401db71370cc))
+
 ## [1.1.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.0.0...v1.1.0) (2026-05-01)
 
 
