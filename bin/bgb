@@ -103,11 +103,22 @@ case "$COMMAND" in
     echo "  bgb clean"
     echo "  bgb clean --keep api"
     echo "  bgb clean --dry-run"
+    echo "  bgb clean --all --no-dist"
+    echo "  bgb clean --workspace ~/projects --keep api"
     echo "  bgb update"
     echo "  bgb doctor"
+    echo ""
+    echo "Shorthand (flags route directly to clean):"
+    echo "  bgb --dry-run"
+    echo "  bgb --all"
+    echo "  bgb --keep api"
     ;;
 
   *)
+    # If the first arg looks like a flag, treat it as shorthand for 'bgb clean'
+    if [[ "$COMMAND" == --* ]]; then
+      exec "$_BBG" "$COMMAND" "$@"
+    fi
     echo "❌ Unknown command: $COMMAND"
     echo "Run 'bgb help' for usage"
     exit 1
