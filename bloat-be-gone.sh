@@ -40,6 +40,27 @@ while [[ $# -gt 0 ]]; do
       SHOW_VERSION=true
       shift
       ;;
+    --help|-h)
+      echo "Usage: bloat-be-gone [options]"
+      echo ""
+      echo "Options:"
+      echo "  --keep <project>      Keep a specific project untouched"
+      echo "  --all                 Clean all projects (no exclusions)"
+      echo "  --dry-run             Preview only — nothing is deleted"
+      echo "  --no-dist             Skip dist/ and build/ directories"
+      echo "  --workspace <path>    Set workspace root (skips interactive prompt)"
+      echo "  --version             Show current version"
+      echo "  --help                Show this help"
+      echo ""
+      echo "Examples:"
+      echo "  bloat-be-gone"
+      echo "  bloat-be-gone --keep api"
+      echo "  bloat-be-gone --all --dry-run"
+      echo "  bloat-be-gone --workspace ~/projects --keep api"
+      echo ""
+      echo "Tip: use 'bgb' for a friendlier interface — run 'bgb help'"
+      exit 0
+      ;;
     *)
       echo "❌ Unknown flag: $1"
       exit 1
