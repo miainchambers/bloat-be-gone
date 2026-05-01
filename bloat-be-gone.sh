@@ -216,7 +216,9 @@ else
 
   if command -v fzf >/dev/null 2>&1 && [ -t 0 ]; then
 
-    mapfile -t KEEP_DIRS < <(
+    while IFS= read -r _line; do
+      [ -n "$_line" ] && KEEP_DIRS+=("$_line")
+    done < <(
       for dir in "${PROJECTS[@]}"; do
         size=$(du -sh "$dir" 2>/dev/null | cut -f1)
         printf "%s | %s\n" "$dir" "$size"
