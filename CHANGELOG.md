@@ -6,6 +6,13 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.4.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.3.0...v1.4.0) (2026-05-01)
+
+
+### ### Added
+
+* add the ability to select multiple projects to keep ([309d59a](https://github.com/miainchambers/bloat-be-gone/commit/309d59a77868a1e4218411f317b40b9c4e5d27f3))
+
 ## [1.3.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.2.2...v1.3.0) (2026-05-01)
 
 
