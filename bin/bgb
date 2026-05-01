@@ -20,8 +20,10 @@ case "$COMMAND" in
 
   update)
     REPO="https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main"
-    curl -fsSL "$REPO/update.sh" | bash
-    exit 0
+    _TMP="$(mktemp)"
+    curl -fsSL "$REPO/update.sh" -o "$_TMP"
+    chmod +x "$_TMP"
+    exec bash "$_TMP"
     ;;
 
   doctor)
