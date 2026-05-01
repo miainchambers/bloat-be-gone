@@ -6,6 +6,13 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [1.2.2](https://github.com/miainchambers/bloat-be-gone/compare/v1.2.1...v1.2.2) (2026-05-01)
+
+
+### ### Fixed
+
+* fix update tap to run on release created and published ([0d03954](https://github.com/miainchambers/bloat-be-gone/commit/0d03954365d8a721cd8d3c11c6e8f99ec5aeb161))
+
 ## [1.2.1](https://github.com/miainchambers/bloat-be-gone/compare/v1.2.0...v1.2.1) (2026-05-01)
 
 
