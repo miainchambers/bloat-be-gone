@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly REPO="https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main"
 readonly INSTALL_DIR="$HOME/.local/bin"
+readonly GITHUB_REPO="miainchambers/bloat-be-gone"
 
 echo "📦 Installing bloat-be-gone..."
+
+# Resolve latest release tag
+echo "🔍 Fetching latest version..."
+LATEST_TAG=$(curl -fsSL "https://api.github.com/repos/$GITHUB_REPO/releases/latest" \
+  | grep '"tag_name"' | cut -d'"' -f4)
+
+if [ -z "$LATEST_TAG" ]; then
+  echo "❌ Could not fetch latest release from GitHub."
+  exit 1
+fi
+
+readonly REPO="https://raw.githubusercontent.com/$GITHUB_REPO/$LATEST_TAG"
 
 mkdir -p "$INSTALL_DIR"
 
@@ -33,7 +45,7 @@ if ! echo ":$PATH:" | grep -q ":$INSTALL_DIR:"; then
 fi
 
 echo ""
-echo "✅ Installed: bloat-be-gone + bgb"
+echo "✅ Installed: bloat-be-gone + bgb ($LATEST_TAG)"
 echo ""
 echo "👉 Quick start:"
 echo "   bgb clean          — interactive cleanup"
