@@ -6,6 +6,17 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [2.0.0](https://github.com/miainchambers/bloat-be-gone/compare/v1.4.1...v2.0.0) (2026-05-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* --mobile permanently deletes Xcode DerivedData, iOS Simulator caches, and Gradle daemon/cache directories with no recovery path
+
+### ### Added
+
+* add --mobile flag to clean Xcode, iOS Simulator, and Gradle caches ([ee47d45](https://github.com/miainchambers/bloat-be-gone/commit/ee47d45d9581bab567c3f4efca4985dc4def0985))
+
 ## [1.4.1](https://github.com/miainchambers/bloat-be-gone/compare/v1.4.0...v1.4.1) (2026-05-01)
 
 
