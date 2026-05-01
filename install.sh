@@ -19,8 +19,11 @@ chmod +x "$INSTALL_DIR/bgb"
 
 # Auto PATH fix
 if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
-  SHELL_RC="$HOME/.zshrc"
-  [ -n "$BASH_VERSION" ] && SHELL_RC="$HOME/.bashrc"
+  case "$SHELL" in
+    */zsh)  SHELL_RC="$HOME/.zshrc" ;;
+    */bash) SHELL_RC="$HOME/.bashrc" ;;
+    *)      SHELL_RC="$HOME/.profile" ;;
+  esac
 
   if ! grep -q "$INSTALL_DIR" "$SHELL_RC" 2>/dev/null; then
     # shellcheck disable=SC2016
