@@ -15,7 +15,7 @@ _bgb() {
 
   local -a clean_flags
   clean_flags=(
-    '--keep[Keep a specific project untouched]:project:_directories'
+    '--keep[Keep specific projects to exclude from cleaning (comma-separated)]:project:_directories'
     '--all[Clean all projects, no exclusions]'
     '--dry-run[Preview only — nothing is deleted]'
     '--no-dist[Skip dist/ and build/ directories]'

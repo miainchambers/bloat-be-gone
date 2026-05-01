@@ -26,8 +26,8 @@ _bgb_completions() {
       COMPREPLY=( $(compgen -d -- "$cur") )
       ;;
     --keep)
-      # complete with subdirectory names of current dir
-      # shellcheck disable=SC2207
+      # complete with subdirectory names (comma-separated values supported)
+      # shellcheck disable=SC2012,SC2035,SC2207
       COMPREPLY=( $(compgen -W "$(ls -d */ 2>/dev/null | tr -d /)" -- "$cur") )
       ;;
   esac
