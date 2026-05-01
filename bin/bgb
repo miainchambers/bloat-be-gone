@@ -103,17 +103,17 @@ case "$COMMAND" in
     echo ""
     echo "Examples:"
     echo "  bgb clean"
-    echo "  bgb clean --keep api"
+    echo "  bgb clean --keep api-project"
     echo "  bgb clean --dry-run"
     echo "  bgb clean --all --no-dist"
-    echo "  bgb clean --workspace ~/projects --keep api"
+    echo "  bgb clean --workspace ~/projects --keep api-project"
     echo "  bgb update"
     echo "  bgb doctor"
     echo ""
     echo "Shorthand (flags route directly to clean):"
     echo "  bgb --dry-run"
     echo "  bgb --all"
-    echo "  bgb --keep api"
+    echo "  bgb --keep api-project"
     ;;
 
   *)

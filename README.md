@@ -42,7 +42,7 @@ Use the `bgb` command wrapper for the cleanest experience:
 
 ```bash
 bgb clean               # interactive cleanup
-bgb clean --keep api    # keep a specific project
+bgb clean --keep api-project    # keep a specific project
 bgb clean --dry-run     # preview only — nothing deleted
 bgb clean --all         # clean everything, no exclusions
 bgb clean --no-dist     # skip dist/ and build/ (safe for committed outputs)
@@ -58,7 +58,7 @@ Or use `bloat-be-gone` directly:
 ```bash
 bloat-be-gone                        # run in current directory
 bloat-be-gone /path/to/workspace     # specify workspace root
-bloat-be-gone --keep api             # keep a specific project
+bloat-be-gone --keep api-project             # keep a specific project
 bloat-be-gone --all                  # clean everything
 bloat-be-gone --no-dist              # skip dist/ and build/
 bloat-be-gone --dry-run              # preview only

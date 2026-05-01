@@ -54,9 +54,9 @@ while [[ $# -gt 0 ]]; do
       echo ""
       echo "Examples:"
       echo "  bloat-be-gone"
-      echo "  bloat-be-gone --keep api"
+      echo "  bloat-be-gone --keep api-project"
       echo "  bloat-be-gone --all --dry-run"
-      echo "  bloat-be-gone --workspace ~/projects --keep api"
+      echo "  bloat-be-gone --workspace ~/projects --keep api-project"
       echo ""
       echo "Tip: use 'bgb' for a friendlier interface — run 'bgb help'"
       exit 0
