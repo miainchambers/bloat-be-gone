@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2310
+set -uo pipefail
 
 # ============================================
 # bloat-be-gone (team-safe CLI tool)
 # ============================================
 
-VERSION="1.0.0"
+readonly VERSION="1.0.0"
 
 # --- OS detection ---
 _os() {
@@ -48,6 +50,10 @@ WORKSPACE_ARG=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep)
+      if [[ $# -lt 2 ]]; then
+        echo "❌ --keep requires a value"
+        exit 1
+      fi
       KEEP_OVERRIDE="$2"
       shift 2
       ;;
@@ -64,6 +70,10 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --workspace)
+      if [[ $# -lt 2 ]]; then
+        echo "❌ --workspace requires a value"
+        exit 1
+      fi
       WORKSPACE_ARG="$2"
       shift 2
       ;;
@@ -280,7 +290,7 @@ yarn cache clean 2>/dev/null || true
 echo "🗑 pnpm store..."
 pnpm store prune 2>/dev/null || true
 
-rm -rf ~/.npm ~/.pnpm-store ~/.cache/yarn ~/.yarn
+rm -rf "$HOME/.npm" "$HOME/.pnpm-store" "$HOME/.cache/yarn" "$HOME/.yarn"
 
 # --- Cleanup ---
 for dir in "${PROJECTS[@]}"; do

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Installs git hooks from hooks/ into .git/hooks/
 # Run once after cloning: bash hooks/install.sh
-
-set -e
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 HOOKS_SRC="$REPO_ROOT/hooks"

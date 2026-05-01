@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-set -e
-
-REPO="https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main"
-INSTALL_DIR="$HOME/.local/bin"
+readonly REPO="https://raw.githubusercontent.com/miainchambers/bloat-be-gone/main"
+readonly INSTALL_DIR="$HOME/.local/bin"
 
 echo "📦 Installing bloat-be-gone..."
 
@@ -18,7 +17,7 @@ curl -fsSL "$REPO/bin/bgb" -o "$INSTALL_DIR/bgb"
 chmod +x "$INSTALL_DIR/bgb"
 
 # Auto PATH fix
-if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
+if ! echo ":$PATH:" | grep -q ":$INSTALL_DIR:"; then
   case "$SHELL" in
     */zsh)  SHELL_RC="$HOME/.zshrc" ;;
     */bash) SHELL_RC="$HOME/.bashrc" ;;

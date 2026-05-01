@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # bgb — thin command wrapper for bloat-be-gone
 # Usage: bgb [clean|update|doctor|version|help]
@@ -38,10 +39,16 @@ case "$COMMAND" in
     if command -v fzf &>/dev/null; then
       echo "✅ fzf installed"
     else
+      _fzf_hint="see https://github.com/junegunn/fzf"
       case "$(uname -s)" in
         Darwin) _fzf_hint="brew install fzf" ;;
-        Linux)  _fzf_hint="sudo apt install fzf  # or: sudo dnf install fzf" ;;
-        *)      _fzf_hint="see https://github.com/junegunn/fzf" ;;
+        Linux)
+          if grep -qi microsoft /proc/version 2>/dev/null; then
+            _fzf_hint="sudo apt install fzf  # or: sudo dnf install fzf  (WSL)"
+          else
+            _fzf_hint="sudo apt install fzf  # or: sudo dnf install fzf"
+          fi
+          ;;
       esac
       echo "⚠️  fzf not found (optional — $_fzf_hint)"
     fi

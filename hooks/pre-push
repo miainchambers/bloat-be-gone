@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # pre-push hook: runs the BATS test suite before each push.
 # Install via: bash hooks/install.sh

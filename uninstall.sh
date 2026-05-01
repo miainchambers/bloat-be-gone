@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-set -e
-
-INSTALL_DIR="$HOME/.local/bin"
+readonly INSTALL_DIR="$HOME/.local/bin"
 
 echo "🗑️  Uninstalling bloat-be-gone..."
 

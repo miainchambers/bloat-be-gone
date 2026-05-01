@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # pre-commit hook: runs ShellCheck on all shell files before each commit.
 # Install via: bash hooks/install.sh
