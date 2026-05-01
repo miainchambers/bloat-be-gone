@@ -111,6 +111,15 @@ teardown() {
   [ ! -d "$WORKSPACE/project-beta/.next" ]
 }
 
+@test "--keep with comma-separated list skips all kept projects" {
+  mkdir -p "$WORKSPACE/project-gamma/node_modules"
+  run bash -c "echo 'y' | bash '$SCRIPT' --workspace '$WORKSPACE' --keep project-alpha,project-gamma"
+  [ "$status" -eq 0 ]
+  [ -d "$WORKSPACE/project-alpha/node_modules" ]
+  [ -d "$WORKSPACE/project-gamma/node_modules" ]
+  [ ! -d "$WORKSPACE/project-beta/.next" ]
+}
+
 @test "safety guard fires when no project selected and no --all" {
   # Pipe EOF so select gets empty input — KEEP_DIR stays empty, guard fires
   run bash -c "echo '' | bash '$SCRIPT' --workspace '$WORKSPACE'"
