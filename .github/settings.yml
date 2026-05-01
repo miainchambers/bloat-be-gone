@@ -52,3 +52,13 @@ branches:
         users: []
         teams: []
         apps: []
+
+  - name: dev
+    protection:
+      required_pull_request_reviews: null
+      required_status_checks:
+        strict: true
+        contexts: []
+      enforce_admins: false
+      required_linear_history: false
+      restrictions: null

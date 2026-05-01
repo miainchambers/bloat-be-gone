@@ -237,6 +237,34 @@ sudo dnf install ShellCheck fzf
 bats tests/
 ```
 
+### Branch workflow
+
+All day-to-day work branches off `dev` and PRs back into `dev`. Only `dev` → `main` PRs trigger a release.
+
+```
+feature/my-thing  →  PR to dev  →  PR to main  →  release-please opens Release PR  →  merge  →  tag + release
+```
+
+### Conventional commits
+
+This repo uses [Conventional Commits](https://www.conventionalcommits.org/). Your commit messages determine what goes in the CHANGELOG and how the version is bumped:
+
+| Prefix | Effect | Example |
+|--------|--------|---------|
+| `feat:` | minor bump (1.0.0 → 1.1.0) | `feat: add --exclude flag` |
+| `fix:` | patch bump (1.0.0 → 1.0.1) | `fix: handle spaces in project names` |
+| `feat!:` or `fix!:` | major bump (1.0.0 → 2.0.0) | `feat!: rename --keep to --preserve` |
+| `chore:`, `ci:`, `test:`, `refactor:` | no release | `chore: update dependencies` |
+| `docs:` | listed in CHANGELOG, no version bump | `docs: add WSL install guide` |
+
+### Releasing
+
+You never manually tag. After merging `dev` → `main`:
+
+1. release-please automatically opens a "Release PR" with the bumped version and updated CHANGELOG
+2. Review and merge the Release PR
+3. release-please creates the tag and GitHub Release automatically
+
 ### Branch protection
 
 All PRs targeting `main` require:
@@ -247,6 +275,12 @@ All PRs targeting `main` require:
 
 ---
 
-## �🪤 License
+## 📝 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a full history of changes and releases.
+
+---
+
+## 🪤 License
 
 MIT — use freely, modify, improve, break, rebuild.
